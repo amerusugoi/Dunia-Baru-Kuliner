@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dunia Baru Kuliner</title>
+<!-- Font judul + teks -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+/* ===== Variabel warna & dasar ===== */
+:root{
+  --cokelat:#5a3825; --cokelat-tua:#4a2d1d; --oranye:#c97b3f; --hijau:#8aa300;
+  --merah:#cc1f1f; --krem:#f7f2f0; --putih:#fff; --teks:#3d2b20;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:var(--krem);color:var(--teks);line-height:1.6}
+h1,h2,h3,.serif{font-family:'Playfair Display',serif;color:var(--cokelat)}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.container{max-width:1140px;margin:0 auto;padding:0 20px}
+/* ===== Navbar sticky ===== */
+header{position:sticky;top:0;z-index:100;background:#fff;box-shadow:0 2px 10px rgba(90,56,37,.1)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1140px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:800;color:var(--cokelat);font-size:1rem;line-height:1.1}
+.logo-badge{width:44px;height:44px;border-radius:50%;background:var(--cokelat);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-weight:600;font-size:.9rem;letter-spacing:.5px;color:#4a4a4a;padding-bottom:3px;border-bottom:2px solid transparent}
+.nav-links a.active{color:var(--oranye);border-color:var(--oranye)}
+/* Tombol hamburger (mobile) */
+.burger{display:none;background:none;border:0;font-size:1.8rem;cursor:pointer;color:var(--cokelat)}
+/* ===== Halaman / view ===== */
+.page{display:none}
+.page.active{display:block;animation:fadePage .4s ease}
+@keyframes fadePage{from{opacity:0}to{opacity:1}}
+/* ===== Hero dengan lengkung gelombang ===== */
+.hero{display:flex;min-height:380px;background:#fdfaf8;position:relative;overflow:hidden}
+.hero-teks{flex:1;padding:50px 20px 50px 6vw;display:flex;flex-direction:column;justify-content:center}
+.hero-teks .kicker{color:var(--oranye);font-weight:700;letter-spacing:1px}
+.hero-teks h1{font-size:3rem;line-height:1.05;margin:4px 0 10px}
+.hero-teks .tagline{font-style:italic;font-weight:600}
+.hero-foto{flex:1;position:relative;min-height:320px;background:#d8ecf5;
+  border-radius:0 0 0 60px / 0 0 0 120px;overflow:hidden;
+  clip-path:ellipse(95% 130% at 65% 20%);}
+.hero-foto img{width:100%;height:100%;object-fit:cover} /* foto cover */
+.hero-foto.kiri-lengkung{border-radius:60px 0 0 0}
+.btn{display:inline-block;background:var(--oranye);color:#fff;border:0;border-radius:30px;padding:11px 28px;font-weight:700;font-size:.8rem;letter-spacing:.5px;cursor:pointer;margin-top:14px;transition:.25s}
+.btn:hover{background:var(--cokelat);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--oranye);border:2px solid var(--oranye)}
+.btn-outline:hover{background:var(--oranye);color:#fff}
+.btn-putih{background:#fff;color:var(--cokelat)}
+/* Pemisah gelombang */
+.wave{display:block;width:100%;height:60px;margin-bottom:-2px}
+/* ===== Section umum ===== */
+section{padding:56px 0;position:relative}
+.sub{font-style:italic;font-weight:500;margin-bottom:12px}
+.card{background:#fff;border-radius:22px;box-shadow:0 6px 20px rgba(90,56,37,.08);overflow:hidden}
+/* Welcome home */
+.welcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.welcome-foto{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.welcome-foto img{border-radius:18px;height:220px;width:100%;object-fit:cover}
+/* Carousel */
+.carousel-wrap{position:relative;text-align:center}
+.carousel{display:flex;gap:18px;overflow-x:auto;scroll-behavior:smooth;padding:20px 6px;scroll-snap-type:x mandatory}
+.carousel::-webkit-scrollbar{display:none}
+.mood-card{flex:0 0 calc(25% - 14px);min-width:210px;background:#fff;border-radius:20px;overflow:hidden;scroll-snap-align:start;box-shadow:0 6px 18px rgba(0,0,0,.07);cursor:pointer}
+.mood-card img{height:180px;width:100%;object-fit:cover}
+.mood-card p{padding:12px;font-weight:700;color:var(--cokelat);font-size:.85rem;letter-spacing:.5px}
+.panah{position:absolute;top:45%;width:44px;height:44px;border-radius:50%;border:2px solid var(--oranye);background:#fff;color:var(--cokelat);font-size:1.3rem;cursor:pointer}
+.panah.kiri{left:-8px}.panah.kanan{right:-8px}
+.panah:hover{background:var(--oranye);color:#fff}
+/* Banner cokelat */
+.banner-cokelat{background:var(--cokelat);color:#fff;text-align:center;padding:60px 20px 50px;position:relative}
+.banner-cokelat h2{color:#fff;font-size:2rem}
+/* Banner oranye */
+.banner-oranye{background:var(--oranye);color:#fff;text-align:center;padding:46px 20px;border-radius:34px 34px 0 0;margin:0 18px}
+/* Grid menu */
+.kategori-head{display:flex;align-items:center;gap:14px;margin:30px 0 6px}
+.ikon-kat{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.6rem;flex-shrink:0}
+.grid-menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin:16px 0 10px}
+.menu-card{border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.07);cursor:pointer;transition:.25s}
+.menu-card:hover{transform:translateY(-5px)}
+.menu-card img{width:100%;height:150px;object-fit:cover}
+.menu-card .nama{padding:10px;font-size:.82rem;font-weight:600;text-align:center;color:var(--cokelat);min-height:56px;display:flex;align-items:center;justify-content:center}
+.placeholder-img{height:150px;display:flex;align-items:center;justify-content:center;background:#e9e2dc;color:var(--cokelat);font-weight:700;font-size:.8rem;text-align:center;padding:10px;border:2px dashed var(--oranye)}
+/* About */
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:30px;align-items:center}
+.blob{border-radius:38% 62% 55% 45% / 45% 40% 60% 55%;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.12);height:300px}
+.blob img{width:100%;height:100%;object-fit:cover}
+.spesial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.spesial{padding:22px;border-radius:22px;background:#fff;position:relative}
+.spesial h3{font-family:'Montserrat',sans-serif;font-size:1rem;margin:10px 0}
+.spesial ul{margin-left:18px;font-size:.9rem}
+.top-row{display:flex;align-items:center;gap:12px}
+.dot{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;flex-shrink:0}
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:.9fr 1.2fr .9fr;gap:26px;align-items:start}
+.info-item{display:flex;gap:12px;margin-bottom:26px}
+.info-ikon{width:52px;height:52px;border-radius:50%;background:#e8cdb4;color:var(--cokelat);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.form-card{background:#e9ddd0;border-radius:30px;padding:30px}
+.form-card input,.form-card textarea{width:100%;border:0;border-radius:20px;padding:12px 16px 12px 44px;margin-bottom:12px;font-family:inherit;font-size:.9rem}
+.field{position:relative}
+.field span{position:absolute;left:14px;top:11px;font-size:1.1rem}
+.form-card textarea{padding-left:16px;min-height:110px;resize:vertical}
+.foto-box{border-radius:22px;overflow:hidden;background:#cfe8f3;min-height:170px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--merah);font-weight:800;font-size:1.3rem;margin-bottom:18px}
+.foto-box img{width:100%;height:190px;object-fit:cover}
+#formMsg{font-size:.85rem;margin-top:8px;min-height:20px}
+/* Dekorasi daun & pesawat kertas */
+.daun{position:absolute;opacity:.7;pointer-events:none;font-size:1.6rem}
+.pesawat{position:absolute;opacity:.6;pointer-events:none}
+/* Lightbox */
+#lightbox{position:fixed;inset:0;background:rgba(40,22,12,.8);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+#lightbox.tampil{display:flex}
+#lightbox .isi{background:#fff;border-radius:20px;max-width:420px;width:100%;overflow:hidden;text-align:center}
+#lightbox img{width:100%;max-height:320px;object-fit:cover}
+#lightbox .tutup{background:var(--merah);color:#fff;border:0;border-radius:20px;padding:8px 22px;margin:14px;cursor:pointer;font-weight:700}
+/* Fade-in saat scroll */
+.fade{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.fade.muncul{opacity:1;transform:none}
+/* Footer */
+footer{background:var(--cokelat-tua);color:#f3e9e2}
+.foot-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;padding:36px 20px;max-width:1140px;margin:0 auto}
+.foot-grid h4{font-size:.85rem;letter-spacing:1px;margin-bottom:10px}
+.foot-grid a{display:block;font-size:.9rem;margin:6px 0;opacity:.9}
+.foot-grid a:hover,.foot-grid a.active{color:var(--oranye)}
+.copy{background:rgba(0,0,0,.15);text-align:center;font-size:.75rem;padding:12px}
+/* ===== Responsif ===== */
+@media(max-width:900px){
+  .hero-teks h1{font-size:2.2rem}
+  .welcome-grid,.about-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr 1fr}
+  .contact-grid .foto-col{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .spesial-grid{grid-template-columns:1fr}
+  .mood-card{flex-basis:calc(50% - 10px)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav-links{display:none;position:absolute;top:68px;left:0;right:0;background:#fff;flex-direction:column;padding:14px 22px;gap:14px;box-shadow:0 10px 20px rgba(0,0,0,.1)}
+  .nav-links.buka{display:flex}
+  .burger{display:block}
+  .hero{flex-direction:column}
+  .hero-foto{clip-path:none;border-radius:0;min-height:240px}
+  .hero-teks{padding:34px 20px}
+  .contact-grid{grid-template-columns:1fr}
+  .contact-grid .foto-col{grid-column:auto;grid-template-columns:1fr}
+  .mood-card{flex-basis:78%}
+  .panah.kiri{left:2px}.panah.kanan{right:2px}
+  .foot-grid{grid-template-columns:1fr;text-align:center}
+  .banner-oranye{margin:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Navbar sticky ===== -->
+<header>
+  <nav class="nav">
+    <a href="#home" class="logo"><span class="logo-badge">🍲</span><span>Dunia Baru<br><small style="font-size:.65rem;letter-spacing:1px">KULINER</small></span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" data-route="home">HOME</a></li>
+      <li><a href="#about" data-route="about">ABOUT US</a></li>
+      <li><a href="#menu" data-route="menu">OUR MENU</a></li>
+      <li><a href="#contact" data-route="contact">CONTACT</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Buka menu">☰</button>
+  </nav>
+</header>
+
+<main>
+<!-- ================= HOME ================= -->
+<div class="page" id="page-home">
+  <div class="hero">
+    <div class="hero-teks">
+      <span class="kicker">WELCOME TO</span>
+      <h1>DUNIA BARU<br>KULINER</h1>
+      <p class="tagline">Your food, your mood.</p>
+      <p style="font-size:.9rem;max-width:380px">Temukan berbagai pilihan makanan untuk menemani setiap mood kamu.</p>
+      <div><a class="btn" href="#menu">EXPLORE OUR MENU</a></div>
+      <!-- dekorasi daun outline -->
+      <svg class="pesawat" style="left:20px;bottom:20px" width="60" height="30" viewBox="0 0 60 30"><path d="M2 15 L58 2 L35 28 Z" fill="none" stroke="#c97b3f"/></svg>
+    </div>
+    <div class="hero-foto">
+      <!-- Foto hero home -->
+      <img src="assets/menu/nasi-ayam-suwir-kemangi.jpg" alt="Nasi ayam suwir kemangi wangi dengan lauk ayam" fetchpriority="high">
+    </div>
+  </div>
+
+  <section>
+    <div class="container welcome-grid">
+      <div class="welcome-foto fade">
+        <img src="assets/menu/nasi-katsu.jpg" alt="Nasi katsu ayam renyah" loading="lazy">
+        <img src="assets/menu/nasi-kebuli-ayam.jpg" alt="Nasi kebuli ayam rempah khas Timur Tengah" loading="lazy">
+      </div>
+      <div class="fade">
+        <h2 style="font-size:1.8rem">WELCOME TO DUNIA BARU KULINER</h2>
+        <p class="sub"><b>More than just a meal.</b></p>
+        <p style="font-size:.92rem">Dunia Baru Kuliner menghadirkan berbagai pilihan makanan, camilan, dessert, dan minuman yang dapat menjadi pilihan untuk berbagai suasana dan selera. Temukan menu favoritmu dan nikmati pilihan kuliner dari Dunia Baru Kuliner.</p>
+        <a class="btn btn-outline" href="#about">LEARN MORE</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="container carousel-wrap fade">
+      <h2>WHAT'S YOUR FOOD MOOD TODAY?</h2>
+      <p class="sub">Pick your favorite.</p>
+      <span class="daun" style="right:10px;top:0">🌿</span>
+      <button class="panah kiri" id="carPrev" aria-label="Sebelumnya">&lt;</button>
+      <div class="carousel" id="carousel"><!-- diisi JS dari data menu utama --></div>
+      <button class="panah kanan" id="carNext" aria-label="Berikutnya">&gt;</button>
+      <a class="btn" href="#menu">SEE ALL MENU</a>
+    </div>
+  </section>
+
+  <!-- Gelombang + banner cokelat -->
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,0 C240,70 420,70 640,30 C860,-10 1080,70 1440,10 L1440,70 L0,70 Z" fill="#5a3825"/></svg>
+  <div class="banner-cokelat">
+    <span class="daun" style="left:8%;top:20px">🌿</span>
+    <h2>CAN'T DECIDE WHAT TO EAT?</h2>
+    <p style="font-size:.9rem">Explore our menu and find out.</p>
+    <a class="btn btn-putih" href="#menu">CHECK OUR MENU</a>
+  </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<div class="page" id="page-about">
+  <div class="hero">
+    <div class="hero-teks">
+      <h1 style="font-size:2.4rem">ABOUT<br>DUNIA BARU KULINER</h1>
+      <p style="font-size:.9rem">Dunia Baru Kuliner — cita rasa Nusantara untuk setiap suasana.</p>
+    </div>
+    <div class="hero-foto">
+      <img src="assets/menu/nasi-kebuli-ayam.jpg" alt="Nasi kebuli ayam sebagai hero halaman tentang kami" loading="lazy">
+    </div>
+  </div>
+
+  <section>
+    <div class="container about-grid">
+      <div class="blob fade">
+        <img src="assets/menu/nasi-bakar-ayam.jpg" alt="Nasi bakar ayam dibungkus daun pisang" loading="lazy">
+      </div>
+      <div class="fade">
+        <span class="kicker" style="color:var(--oranye);font-weight:700">WHO WE ARE</span>
+        <h2>DUNIA BARU KULINER</h2>
+        <p class="sub">More than just a meal.</p>
+        <p style="font-size:.92rem">Dunia Baru Kuliner lahir dari kecintaan pada kekayaan rasa Nusantara — dari nasi kebuli yang rempah, nasi bakar yang wangi daun, hingga rujak dan asinan yang segar. Kami meracik makanan rumahan dengan sentuhan modern agar cocok untuk semua mood: kenyang, santai, maupun manis. Setiap hidangan dimasak segar, halal, dan ramah di kantong untuk menemani harimu.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="container fade">
+      <h2 style="text-align:center">OUR SPECIALITIES</h2>
+      <p class="sub" style="text-align:center">Something for every craving.</p>
+      <div class="spesial-grid" id="spesialGrid"><!-- diisi JS dari data menu --></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= MENU ================= -->
+<div class="page" id="page-menu">
+  <div class="hero" style="min-height:220px">
+    <div class="hero-teks" style="text-align:center;align-items:center">
+      <h1 style="font-size:2.6rem">OUR MENU</h1>
+      <p class="sub">Find something delicious for every mood.</p>
+    </div>
+    <div class="hero-foto" style="max-width:42%">
+      <img src="assets/menu/nasi-ayam-mentega.jpg" alt="Nasi ayam mentega gurih sebagai header menu" loading="lazy">
+    </div>
+  </div>
+
+  <section style="padding-top:20px">
+    <div class="container">
+      <div class="kategori-head fade">
+        <span class="ikon-kat" style="background:var(--oranye)">🍚</span>
+        <div><h2>MAIN DISHES</h2><p class="sub" style="margin:0">Healthy meals for a happy day.</p></div>
+      </div>
+      <div class="grid-menu" id="gridMain"></div>
+
+      <div class="kategori-head fade">
+        <span class="ikon-kat" style="background:var(--hijau)">🍪</span>
+        <div><h2>SNACKS &amp; DESSERTS</h2><p class="sub" style="margin:0">Small bites, big happiness.</p></div>
+      </div>
+      <div class="grid-menu" id="gridSnack"></div>
+
+      <div class="kategori-head fade">
+        <span class="ikon-kat" style="background:var(--merah)">🥤</span>
+        <div><h2>DRINKS</h2><p class="sub" style="margin:0">Fresh drinks, better vibes.</p></div>
+      </div>
+      <div class="grid-menu" id="gridDrink"></div>
+      <span class="daun" style="left:30px">🌿</span>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CONTACT ================= -->
+<div class="page" id="page-contact">
+  <div class="hero">
+    <div class="hero-teks">
+      <h1 style="font-size:2.6rem">CONTACT US</h1>
+      <p style="font-size:.92rem">Jika ada pertanyaan, saran, atau ingin bekerja sama? Jangan ragu untuk menghubungi kami. Kami siap membantu anda!</p>
+    </div>
+    <div class="hero-foto">
+      <img src="assets/menu/nasi-katsu.jpg" alt="Nasi katsu sebagai hero halaman kontak" loading="lazy">
+    </div>
+  </div>
+
+  <section>
+    <div class="container contact-grid">
+      <!-- Info kontak -->
+      <div class="fade">
+        <div class="info-item"><span class="info-ikon">📍</span><div><b style="color:var(--oranye)">Alamat</b><br><small>Jl. Kuliner Nusantara No. 26, Jakarta</small></div></div>
+        <div class="info-item"><span class="info-ikon">📞</span><div><b style="color:var(--oranye)">Telepon</b><br><small>0812-0000-2026</small></div></div>
+        <div class="info-item"><span class="info-ikon">✉️</span><div><b style="color:var(--oranye)">Email</b><br><small>halo@duniabarukuliner.id</small></div></div>
+        <div class="info-item"><span class="info-ikon">📸</span><div><b style="color:var(--oranye)">Media Sosial</b><br><small>@duniabarukuliner.anexpo2026</small></div></div>
+      </div>
+      <!-- Form -->
+      <div class="form-card fade">
+        <h2 style="color:var(--oranye)">Kirim Pesan</h2>
+        <p style="font-size:.88rem;margin-bottom:12px">Isi form di bawah ini, dan kami akan segera menghubungi anda.</p>
+        <form id="pesanForm" novalidate>
+          <div class="field"><span>👤</span><input id="fNama" type="text" placeholder="Nama Anda"></div>
+          <div class="field"><span>✉️</span><input id="fEmail" type="email" placeholder="Email Anda"></div>
+          <div class="field"><textarea id="fPesan" placeholder="Pesan Anda"></textarea></div>
+          <button class="btn" type="submit" style="width:100%">✈️ &nbsp;Kirim Pesan</button>
+          <p id="formMsg"></p>
+        </form>
+      </div>
+      <!-- Foto maps & booth -->
+      <div class="foto-col fade">
+        <div class="foto-box"><img src="assets/menu/maps.jpg" alt="Peta lokasi Dunia Baru Kuliner" loading="lazy"></div>
+        <div class="foto-box"><img src="assets/menu/booth.jpg" alt="Foto booth Dunia Baru Kuliner" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="banner-oranye fade">
+    <p style="font-style:italic">See you at<br><b style="font-size:1.2rem">Dunia Baru Kuliner!</b></p>
+    <p style="font-size:.8rem;font-style:italic">Stay connected with Dunia Baru Kuliner for more updates.</p>
+    <a class="btn btn-putih" href="https://instagram.com/duniabarukuliner.anexpo2026" target="_blank" rel="noopener">FOLLOW US ON INSTAGRAM</a>
+    <p style="font-size:.8rem;margin-top:8px">@duniabarukuliner.anexpo2026</p>
+  </div>
+</div>
+</main>
+
+<!-- ===== Footer sama di semua halaman ===== -->
+<footer>
+  <div class="foot-grid">
+    <div><a href="#home" class="logo" style="color:#fff"><span class="logo-badge">🍲</span><span>Dunia Baru<br><small style="font-size:.65rem">KULINER</small></span></a></div>
+    <div>
+      <h4>QUICK LINKS</h4>
+      <a href="#home" data-route="home">Home</a>
+      <a href="#about" data-route="about">About Us</a>
+      <a href="#menu" data-route="menu">Our Menu</a>
+      <a href="#contact" data-route="contact">Contact</a>
+    </div>
+    <div>
+      <h4>LET'S CONNECT</h4>
+      <a href="https://instagram.com/duniabarukuliner.anexpo2026" target="_blank" rel="noopener">📸 &nbsp;@duniabarukuliner.anexpo2026</a>
+    </div>
+  </div>
+  <div class="copy">© 2026 Dunia Baru Kuliner</div>
+</footer>
+
+<!-- ===== Lightbox menu ===== -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <div class="isi">
+    <img id="lbImg" src="" alt="">
+    <h3 id="lbNama" style="padding:10px 16px 0"></h3>
+    <button class="tutup" id="lbTutup">Tutup</button>
+  </div>
+</div>
+
+<script>
+// ===== Satu sumber data untuk carousel, menu, & about =====
+const MENU = [
+  // Makanan utama (9)
+  {nama:"Nasi Kebuli Ayam", kat:"main"},
+  {nama:"Nasi Katsu", kat:"main"},
+  {nama:"Nasi Ayam Mentega", kat:"main"},
+  {nama:"Nasi Nugget Sosis", kat:"main"},
+  {nama:"Nasi Bakar Ayam", kat:"main"},
+  {nama:"Nasi Ayam Suwir Kemangi", kat:"main"},
+  {nama:"Mie Goreng Kampung", kat:"main"},
+  {nama:"Nasi Ayam Bakar", kat:"main"},
+  {nama:"Nasi Goreng Bakso", kat:"main"},
+  // Camilan & dessert (7)
+  {nama:"Rujak Campur", kat:"snack"},
+  {nama:"Asinan Mangga", kat:"snack"},
+  {nama:"Kue Soes", kat:"snack"},
+  {nama:"Kue Cincin Betawi", kat:"snack"},
+  {nama:"Soft Cookies", kat:"snack"},
+  {nama:"Donat Kampung", kat:"snack"},
+  {nama:"Pastel Sayur", kat:"snack"},
+  // Minuman (3) — Es Lemon Tea belum ada foto
+  {nama:"Sago Mangga", kat:"drink"},
+  {nama:"Buko Pandan", kat:"drink"},
+  {nama:"Es Lemon Tea", kat:"drink"}
+];
+
+// Ubah nama menu jadi nama file: kecil + tanda hubung
+function slug(nama){
+  return nama.toLowerCase().replace(/[^a-z0-9 ]/g,"").trim().replace(/\s+/g,"-") + ".jpg";
+}
+function foto(item){
+  return "assets/menu/" + slug(item.nama);
+}
+
+// ===== Routing hash tanpa reload =====
+const halaman = ["home","about","menu","contact"];
+function tampilkan(rute){
+  if(!halaman.includes(rute)) rute = "home";
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-"+rute).classList.add("active");
+  // Tandai nav + quick links yang aktif
+  document.querySelectorAll('[data-route]').forEach(a => {
+    a.classList.toggle("active", a.dataset.route === rute);
+  });
+  window.scrollTo({top:0, behavior:"instant"}); // selalu ke atas
+  document.getElementById("navLinks").classList.remove("buka");
+  amatiFade(); // pastikan animasi jalan di halaman baru
+}
+window.addEventListener("hashchange", () => {
+  tampilkan(location.hash.replace("#","") || "home");
+});
+
+// ===== Hamburger mobile =====
+document.getElementById("burger").onclick = () => {
+  document.getElementById("navLinks").classList.toggle("buka");
+};
+
+// ===== Render carousel (4 card makanan utama) =====
+const car = document.getElementById("carousel");
+MENU.filter(m => m.kat === "main").forEach(m => {
+  const d = document.createElement("div");
+  d.className = "mood-card";
+  d.innerHTML = `<img src="${foto(m)}" alt="Foto ${m.nama}" loading="lazy" onerror="this.outerHTML='<div class=placeholder-img>Foto segera hadir</div>'">
+                 <p>${m.nama.toUpperCase()}</p>`;
+  d.onclick = () => bukaLightbox(m);
+  car.appendChild(d);
+});
+document.getElementById("carPrev").onclick = () => car.scrollBy({left:-260});
+document.getElementById("carNext").onclick = () => car.scrollBy({left:260});
+
+// ===== Render grid halaman Menu =====
+function isiGrid(id, kat){
+  const wadah = document.getElementById(id);
+  MENU.filter(m => m.kat === kat).forEach(m => {
+    const k = document.createElement("div");
+    k.className = "menu-card fade";
+    const isiFoto = m.tanpaFoto
+      ? `<div class="placeholder-img">Foto segera hadir</div>`
+      : `<img src="${foto(m)}" alt="Foto ${m.nama}" loading="lazy" onerror="this.outerHTML='<div class=placeholder-img>Foto segera hadir</div>'">`;
+    k.innerHTML = `${isiFoto}<div class="nama">${m.nama}</div>`;
+    k.onclick = () => { if(!m.tanpaFoto) bukaLightbox(m); };
+    wadah.appendChild(k);
+  });
+}
+isiGrid("gridMain","main");
+isiGrid("gridSnack","snack");
+isiGrid("gridDrink","drink");
+
+// ===== Render kartu Specialities di About =====
+const infoKat = [
+  {judul:"MAIN DISHES", warna:"var(--oranye)", ikon:"🍚", kat:"main"},
+  {judul:"SNACKS & DESSERTS", warna:"var(--hijau)", ikon:"🍪", kat:"snack"},
+  {judul:"DRINKS", warna:"var(--merah)", ikon:"🥤", kat:"drink"}
+];
+const sg = document.getElementById("spesialGrid");
+infoKat.forEach(k => {
+  const daftar = MENU.filter(m => m.kat === k.kat).slice(0,5).map(m => `<li>${m.nama}</li>`).join("");
+  const el = document.createElement("div");
+  el.className = "card spesial";
+  el.innerHTML = `<div class="top-row"><span class="dot" style="background:${k.warna}">${k.ikon}</span><h3>${k.judul}</h3></div><ul>${daftar}</ul>`;
+  sg.appendChild(el);
+});
+
+// ===== Lightbox (klik card) =====
+const lb = document.getElementById("lightbox");
+function bukaLightbox(m){
+  const img = document.getElementById("lbImg");
+  img.src = foto(m); img.alt = "Foto " + m.nama;
+  document.getElementById("lbNama").textContent = m.nama;
+  lb.classList.add("tampil");
+}
+document.getElementById("lbTutup").onclick = () => lb.classList.remove("tampil");
+lb.onclick = e => { if(e.target === lb) lb.classList.remove("tampil"); };
+document.addEventListener("keydown", e => { if(e.key === "Escape") lb.classList.remove("tampil"); });
+
+// ===== Validasi form Kirim Pesan =====
+document.getElementById("pesanForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const nama = document.getElementById("fNama").value.trim();
+  const email = document.getElementById("fEmail").value.trim();
+  const pesan = document.getElementById("fPesan").value.trim();
+  const msg = document.getElementById("formMsg");
+  if(nama.length < 3){ msg.style.color = "var(--merah)"; msg.textContent = "Nama minimal 3 huruf."; return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.style.color = "var(--merah)"; msg.textContent = "Email tidak valid."; return; }
+  if(pesan.length < 10){ msg.style.color = "var(--merah)"; msg.textContent = "Pesan minimal 10 karakter."; return; }
+  msg.style.color = "var(--hijau)";
+  msg.textContent = "Terima kasih, " + nama + "! Pesanmu sudah terkirim. ✅";
+  e.target.reset();
+});
+
+// ===== Animasi fade-in saat scroll =====
+let obs;
+function amatiFade(){
+  const els = document.querySelectorAll(".fade:not(.muncul)");
+  if(!("IntersectionObserver" in window)){ els.forEach(el => el.classList.add("muncul")); return; }
+  if(obs) obs.disconnect();
+  obs = new IntersectionObserver(es => {
+    es.forEach(en => { if(en.isIntersecting){ en.target.classList.add("muncul"); obs.unobserve(en.target); } });
+  }, {threshold:.12});
+  els.forEach(el => obs.observe(el));
+}
+
+// ===== Jalankan rute awal =====
+tampilkan(location.hash.replace("#","") || "home");
+amatiFade();
+</script>
+</body>
+</html>
