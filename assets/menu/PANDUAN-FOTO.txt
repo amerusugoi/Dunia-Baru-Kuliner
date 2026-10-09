@@ -1,0 +1,43 @@
+CARA MENAMBAHKAN FOTO PRODUK — Dunia Baru Kuliner
+==================================================
+
+1. Copy foto kamu ke folder ini: assets/menu/
+2. Rename persis seperti di bawah (huruf kecil, .jpg):
+
+MAIN DISHES (9):
+  nasi-kebuli-ayam.jpg
+  nasi-katsu.jpg
+  nasi-ayam-mentega.jpg
+  nasi-nugget-sosis.jpg
+  nasi-bakar-ayam.jpg
+  nasi-ayam-suwir-kemangi.jpg
+  mie-goreng-kampung.jpg
+  nasi-ayam-bakar.jpg
+  nasi-goreng-bakso.jpg
+
+SNACKS & DESSERTS (7):
+  rujak-campur.jpg
+  asinan-mangga.jpg
+  kue-soes.jpg
+  kue-cincin-betawi.jpg
+  soft-cookies.jpg
+  donat-kampung.jpg
+  pastel-sayur.jpg
+
+DRINKS (3):
+  sago-mangga.jpg
+  buko-pandan.jpg
+  es-lemon-tea.jpg
+
+TAMBAHAN (halaman Contact):
+  maps.jpg
+  booth.jpg
+
+CATATAN:
+- Format .jpeg dan .png juga otomatis dicoba kalau .jpg tidak ketemu.
+  Contoh: kalau kamu punya "Nasi Katsu.jpeg", rename jadi "nasi-katsu.jpeg" tetap tampil.
+- Kalau file belum ada, otomatis tampil kotak "Foto segera hadir" — bukan gambar rusak.
+- Ukuran disarankan: landscape/persegi, min. 800px, < 500KB agar web cepat.
+- Setelah tambah foto, refresh browser (Ctrl+R).
+
+Hapus file .gitkeep ini boleh setelah ada foto, atau biarkan saja.

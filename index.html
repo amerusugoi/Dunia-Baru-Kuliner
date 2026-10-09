@@ -6,6 +6,35 @@
 <title>Dunia Baru Kuliner</title>
 <!-- Font judul + teks -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<!-- Fallback foto dini (dipakai onerror di semua <img> sebelum script utama dimuat) -->
+<script>
+function fotoCadangan(src){
+  if(src && src.endsWith(".jpg")) return src.slice(0,-4) + ".jpeg";
+  if(src && src.endsWith(".jpeg")) return src.slice(0,-5) + ".png";
+  return null;
+}
+// Urutan fallback: URL internet -> file lokal assets/menu/ -> kotak "Foto segera hadir".
+function gagalMuatFoto(el){
+  try{
+    var src = el.getAttribute ? (el.getAttribute("src") || el.src) : el.src;
+    // 1) Kalau yang gagal adalah foto internet & ada cadangan lokal, coba file lokal
+    var lokal = el.getAttribute ? el.getAttribute("data-lokal") : null;
+    if(src && src.indexOf("http") === 0 && lokal && src !== lokal){
+      el.setAttribute("src", lokal);
+      return;
+    }
+    // 2) Coba ekstensi lain (.jpg -> .jpeg -> .png)
+    var next = fotoCadangan(src);
+    if(next){
+      if(el.setAttribute) el.setAttribute("src", next); else el.src = next;
+      return;
+    }
+    // 3) Menyerah: tampilkan placeholder
+    var label = el.alt ? el.alt.replace(/^Foto\s*/i,"") : "produk";
+    el.outerHTML = '<div class="placeholder-img">Foto ' + label + '<br>segera hadir</div>';
+  }catch(e){ /* abaikan */ }
+}
+</script>
 <style>
 /* ===== Variabel warna & dasar ===== */
 :root{
@@ -83,6 +112,11 @@ section{padding:56px 0;position:relative}
 .menu-card img{width:100%;height:150px;object-fit:cover}
 .menu-card .nama{padding:10px;font-size:.82rem;font-weight:600;text-align:center;color:var(--cokelat);min-height:56px;display:flex;align-items:center;justify-content:center}
 .placeholder-img{height:150px;display:flex;align-items:center;justify-content:center;background:#e9e2dc;color:var(--cokelat);font-weight:700;font-size:.8rem;text-align:center;padding:10px;border:2px dashed var(--oranye)}
+/* Placeholder kalau file foto produk / hero belum ada */
+.mood-card .placeholder-img{height:180px;border:0}
+.hero-foto .placeholder-img{height:100%;min-height:280px;border:0;font-size:1rem}
+.blob .placeholder-img{height:100%;min-height:300px;border:0}
+.foto-box .placeholder-img{height:100%;min-height:190px;border:0;background:transparent}
 /* About */
 .about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:30px;align-items:center}
 .blob{border-radius:38% 62% 55% 45% / 45% 40% 60% 55%;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.12);height:300px}
@@ -181,15 +215,15 @@ footer{background:var(--cokelat-tua);color:#f3e9e2}
     </div>
     <div class="hero-foto">
       <!-- Foto hero home -->
-      <img src="assets/menu/nasi-ayam-suwir-kemangi.jpg" alt="Nasi ayam suwir kemangi wangi dengan lauk ayam" fetchpriority="high">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ayam%20Suwir%20Rica-Rica%201.jpg?width=800" data-lokal="assets/menu/nasi-ayam-suwir-kemangi.jpg" alt="Foto Nasi Ayam Suwir Kemangi" fetchpriority="high" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
     </div>
   </div>
 
   <section>
     <div class="container welcome-grid">
       <div class="welcome-foto fade">
-        <img src="assets/menu/nasi-katsu.jpg" alt="Nasi katsu ayam renyah" loading="lazy">
-        <img src="assets/menu/nasi-kebuli-ayam.jpg" alt="Nasi kebuli ayam rempah khas Timur Tengah" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1562967916-eb82221dfb92?q=80&w=800&auto=format&fit=crop" data-lokal="assets/menu/nasi-katsu.jpg" alt="Foto Nasi Katsu" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
+        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=800&auto=format&fit=crop" data-lokal="assets/menu/nasi-kebuli-ayam.jpg" alt="Foto Nasi Kebuli Ayam" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
       </div>
       <div class="fade">
         <h2 style="font-size:1.8rem">WELCOME TO DUNIA BARU KULINER</h2>
@@ -230,14 +264,14 @@ footer{background:var(--cokelat-tua);color:#f3e9e2}
       <p style="font-size:.9rem">Dunia Baru Kuliner — cita rasa Nusantara untuk setiap suasana.</p>
     </div>
     <div class="hero-foto">
-      <img src="assets/menu/nasi-kebuli-ayam.jpg" alt="Nasi kebuli ayam sebagai hero halaman tentang kami" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=800&auto=format&fit=crop" data-lokal="assets/menu/nasi-kebuli-ayam.jpg" alt="Foto Nasi Kebuli Ayam" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
     </div>
   </div>
 
   <section>
     <div class="container about-grid">
       <div class="blob fade">
-        <img src="assets/menu/nasi-bakar-ayam.jpg" alt="Nasi bakar ayam dibungkus daun pisang" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop" data-lokal="assets/menu/nasi-bakar-ayam.jpg" alt="Foto Nasi Bakar Ayam" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
       </div>
       <div class="fade">
         <span class="kicker" style="color:var(--oranye);font-weight:700">WHO WE ARE</span>
@@ -265,7 +299,7 @@ footer{background:var(--cokelat-tua);color:#f3e9e2}
       <p class="sub">Find something delicious for every mood.</p>
     </div>
     <div class="hero-foto" style="max-width:42%">
-      <img src="assets/menu/nasi-ayam-mentega.jpg" alt="Nasi ayam mentega gurih sebagai header menu" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=800&auto=format&fit=crop" data-lokal="assets/menu/nasi-ayam-mentega.jpg" alt="Foto Nasi Ayam Mentega" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
     </div>
   </div>
 
@@ -301,7 +335,7 @@ footer{background:var(--cokelat-tua);color:#f3e9e2}
       <p style="font-size:.92rem">Jika ada pertanyaan, saran, atau ingin bekerja sama? Jangan ragu untuk menghubungi kami. Kami siap membantu anda!</p>
     </div>
     <div class="hero-foto">
-      <img src="assets/menu/nasi-katsu.jpg" alt="Nasi katsu sebagai hero halaman kontak" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1562967916-eb82221dfb92?q=80&w=800&auto=format&fit=crop" data-lokal="assets/menu/nasi-katsu.jpg" alt="Foto Nasi Katsu" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
     </div>
   </div>
 
@@ -328,8 +362,8 @@ footer{background:var(--cokelat-tua);color:#f3e9e2}
       </div>
       <!-- Foto maps & booth -->
       <div class="foto-col fade">
-        <div class="foto-box"><img src="assets/menu/maps.jpg" alt="Peta lokasi Dunia Baru Kuliner" loading="lazy"></div>
-        <div class="foto-box"><img src="assets/menu/booth.jpg" alt="Foto booth Dunia Baru Kuliner" loading="lazy"></div>
+        <div class="foto-box"><img src="assets/menu/maps.jpg" alt="Foto Peta lokasi" loading="lazy" onerror="gagalMuatFoto(this)"></div>
+        <div class="foto-box"><img src="assets/menu/booth.jpg" alt="Foto Booth" loading="lazy" onerror="gagalMuatFoto(this)"></div>
       </div>
     </div>
   </section>
@@ -372,30 +406,45 @@ footer{background:var(--cokelat-tua);color:#f3e9e2}
 </div>
 
 <script>
+// ===== Daftar file foto yang diharapkan di folder assets/menu/ =====
+// Foto utama diambil dari internet (Unsplash + Wikimedia Commons, sudah dicek sesuai menu).
+// Kalau URL internet gagal, otomatis dicoba file lokal assets/menu/ lalu kotak "Foto segera hadir".
+// File lokal (opsional, untuk foto asli produk):
+//  MAIN: nasi-kebuli-ayam.jpg, nasi-katsu.jpg, nasi-ayam-mentega.jpg,
+//   nasi-nugget-sosis.jpg, nasi-bakar-ayam.jpg, nasi-ayam-suwir-kemangi.jpg,
+//   mie-goreng-kampung.jpg, nasi-ayam-bakar.jpg, nasi-goreng-bakso.jpg
+//  SNACK: rujak-campur.jpg, asinan-mangga.jpg, kue-soes.jpg, kue-cincin-betawi.jpg,
+//   soft-cookies.jpg, donat-kampung.jpg, pastel-sayur.jpg
+//  DRINK: sago-mangga.jpg, buko-pandan.jpg, es-lemon-tea.jpg
+//
 // ===== Satu sumber data untuk carousel, menu, & about =====
+// Setiap produk punya foto internet + nama file lokal sebagai cadangan.
+const U = "https://images.unsplash.com/";
+const Q = "?q=80&w=800&auto=format&fit=crop";
+const W = "https://commons.wikimedia.org/wiki/Special:FilePath/";
 const MENU = [
   // Makanan utama (9)
-  {nama:"Nasi Kebuli Ayam", kat:"main"},
-  {nama:"Nasi Katsu", kat:"main"},
-  {nama:"Nasi Ayam Mentega", kat:"main"},
-  {nama:"Nasi Nugget Sosis", kat:"main"},
-  {nama:"Nasi Bakar Ayam", kat:"main"},
-  {nama:"Nasi Ayam Suwir Kemangi", kat:"main"},
-  {nama:"Mie Goreng Kampung", kat:"main"},
-  {nama:"Nasi Ayam Bakar", kat:"main"},
-  {nama:"Nasi Goreng Bakso", kat:"main"},
+  {nama:"Nasi Kebuli Ayam", kat:"main", foto:U+"photo-1512058564366-18510be2db19"+Q},
+  {nama:"Nasi Katsu", kat:"main", foto:U+"photo-1562967916-eb82221dfb92"+Q},
+  {nama:"Nasi Ayam Mentega", kat:"main", foto:U+"photo-1585937421612-70a008356fbe"+Q},
+  {nama:"Nasi Nugget Sosis", kat:"main", foto:U+"photo-1569058242253-92a9c755a0ec"+Q},
+  {nama:"Nasi Bakar Ayam", kat:"main", foto:U+"photo-1555939594-58d7cb561ad1"+Q},
+  {nama:"Nasi Ayam Suwir Kemangi", kat:"main", foto:W+"Ayam%20Suwir%20Rica-Rica%201.jpg?width=800"},
+  {nama:"Mie Goreng Kampung", kat:"main", foto:U+"photo-1585032226651-759b368d7246"+Q},
+  {nama:"Nasi Ayam Bakar", kat:"main", foto:U+"photo-1598103442097-8b74394b95c6"+Q},
+  {nama:"Nasi Goreng Bakso", kat:"main", foto:U+"photo-1563379926898-05f4575a45d8"+Q},
   // Camilan & dessert (7)
-  {nama:"Rujak Campur", kat:"snack"},
-  {nama:"Asinan Mangga", kat:"snack"},
-  {nama:"Kue Soes", kat:"snack"},
-  {nama:"Kue Cincin Betawi", kat:"snack"},
-  {nama:"Soft Cookies", kat:"snack"},
-  {nama:"Donat Kampung", kat:"snack"},
-  {nama:"Pastel Sayur", kat:"snack"},
-  // Minuman (3) — Es Lemon Tea belum ada foto
-  {nama:"Sago Mangga", kat:"drink"},
-  {nama:"Buko Pandan", kat:"drink"},
-  {nama:"Es Lemon Tea", kat:"drink"}
+  {nama:"Rujak Campur", kat:"snack", foto:U+"photo-1546069901-ba9599a7e63c"+Q},
+  {nama:"Asinan Mangga", kat:"snack", foto:U+"photo-1540189549336-e6e99c3679fe"+Q},
+  {nama:"Kue Soes", kat:"snack", foto:W+"Cream%20puff%20(cropped%20and%20edited).jpg?width=800"},
+  {nama:"Kue Cincin Betawi", kat:"snack", foto:W+"Kue%20Cincin.jpg?width=800"},
+  {nama:"Soft Cookies", kat:"snack", foto:U+"photo-1499636136210-6f4ee915583e"+Q},
+  {nama:"Donat Kampung", kat:"snack", foto:U+"photo-1551024601-bec78aea704b"+Q},
+  {nama:"Pastel Sayur", kat:"snack", foto:U+"photo-1601050690597-df0568f70950"+Q},
+  // Minuman (3)
+  {nama:"Sago Mangga", kat:"drink", foto:W+"Mango%20Sago%2C%20June%202025.jpg?width=800"},
+  {nama:"Buko Pandan", kat:"drink", foto:W+"Buko%20Pandan%20Salad%20In%20a%20bowl%20together%20with%20gelatin%20and%20buko%20strips.jpg?width=800"},
+  {nama:"Es Lemon Tea", kat:"drink", foto:U+"photo-1556679343-c7306c1976bc"+Q}
 ];
 
 // Ubah nama menu jadi nama file: kecil + tanda hubung
@@ -403,8 +452,16 @@ function slug(nama){
   return nama.toLowerCase().replace(/[^a-z0-9 ]/g,"").trim().replace(/\s+/g,"-") + ".jpg";
 }
 function foto(item){
+  // Utama: foto internet. Cadangan lokal dipegang via atribut data-lokal di <img>.
+  if(item.foto) return item.foto;
   return "assets/menu/" + slug(item.nama);
 }
+function lokal(item){
+  if(item.foto) return "assets/menu/" + slug(item.nama);
+  return "";
+}
+// NOTE: fotoCadangan() + gagalMuatFoto() sudah didefinisikan di <head>
+// agar bisa dipakai onerror sebelum script utama dimuat.
 
 // ===== Routing hash tanpa reload =====
 const halaman = ["home","about","menu","contact"];
@@ -429,12 +486,12 @@ document.getElementById("burger").onclick = () => {
   document.getElementById("navLinks").classList.toggle("buka");
 };
 
-// ===== Render carousel (4 card makanan utama) =====
+// ===== Render carousel (semua makanan utama) =====
 const car = document.getElementById("carousel");
 MENU.filter(m => m.kat === "main").forEach(m => {
   const d = document.createElement("div");
   d.className = "mood-card";
-  d.innerHTML = `<img src="${foto(m)}" alt="Foto ${m.nama}" loading="lazy" onerror="this.outerHTML='<div class=placeholder-img>Foto segera hadir</div>'">
+  d.innerHTML = `<img src="${foto(m)}" data-lokal="${lokal(m)}" alt="Foto ${m.nama}" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">
                  <p>${m.nama.toUpperCase()}</p>`;
   d.onclick = () => bukaLightbox(m);
   car.appendChild(d);
@@ -448,9 +505,10 @@ function isiGrid(id, kat){
   MENU.filter(m => m.kat === kat).forEach(m => {
     const k = document.createElement("div");
     k.className = "menu-card fade";
+    // Setiap produk SELALU punya foto internet + cadangan lokal + placeholder
     const isiFoto = m.tanpaFoto
-      ? `<div class="placeholder-img">Foto segera hadir</div>`
-      : `<img src="${foto(m)}" alt="Foto ${m.nama}" loading="lazy" onerror="this.outerHTML='<div class=placeholder-img>Foto segera hadir</div>'">`;
+      ? `<div class="placeholder-img">Foto ${m.nama}<br>segera hadir</div>`
+      : `<img src="${foto(m)}" data-lokal="${lokal(m)}" alt="Foto ${m.nama}" loading="lazy" onerror="gagalMuatFoto(this)" referrerpolicy="no-referrer">`;
     k.innerHTML = `${isiFoto}<div class="nama">${m.nama}</div>`;
     k.onclick = () => { if(!m.tanpaFoto) bukaLightbox(m); };
     wadah.appendChild(k);
@@ -478,7 +536,43 @@ infoKat.forEach(k => {
 // ===== Lightbox (klik card) =====
 const lb = document.getElementById("lightbox");
 function bukaLightbox(m){
-  const img = document.getElementById("lbImg");
+  let img = document.getElementById("lbImg");
+  if(!img){
+    // Dibuat ulang kalau sebelumnya diganti placeholder oleh gagalMuatFoto()
+    const isi = lb.querySelector(".isi");
+    img = document.createElement("img");
+    img.id = "lbImg";
+    img.style.cssText = "width:100%;max-height:320px;object-fit:cover";
+    isi.insertBefore(img, isi.firstChild);
+  } else {
+    img.style.display = "";
+  }
+  img.onerror = function(){
+    // Coba file lokal dulu sebelum menyerah ke placeholder
+    var cur = img.getAttribute("src") || "";
+    var lok = lokal(m);
+    if(cur.indexOf("http") === 0 && lok){
+      img.setAttribute("src", lok);
+      return;
+    }
+    var next = (typeof fotoCadangan === "function") ? fotoCadangan(cur) : null;
+    if(next){ img.setAttribute("src", next); return; }
+    // Khusus lightbox: jangan hapus <img>, cukup tampilkan placeholder teks
+    const label = m.nama || "produk";
+    img.style.display = "none";
+    let ph = lb.querySelector(".lb-ph");
+    if(!ph){
+      ph = document.createElement("div");
+      ph.className = "placeholder-img lb-ph";
+      ph.style.cssText = "height:220px;border:0";
+      img.after(ph);
+    }
+    ph.innerHTML = "Foto " + label + "<br>segera hadir";
+  };
+  // Bersihkan placeholder lama kalau ada
+  const phLama = lb.querySelector(".lb-ph");
+  if(phLama) phLama.remove();
+  img.style.display = "";
   img.src = foto(m); img.alt = "Foto " + m.nama;
   document.getElementById("lbNama").textContent = m.nama;
   lb.classList.add("tampil");
